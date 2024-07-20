@@ -6,19 +6,38 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+/**
+ * The {@code ForkifyClient} class is responsible for making HTTP requests to the Forkify API.
+ * It uses the {@link RestTemplate} to send requests and handle responses.
+ */
 @Component
 public class ForkifyClient {
 
+    // The base URL of the Forkify API, injected from the application properties.
     @Value("${forkify.api.url}")
     private String apiUrl;
 
+    // The {@link RestTemplate} used for making HTTP requests.
     private final RestTemplate restTemplate;
 
+    /**
+     * Constructs a {@code ForkifyClient} with the specified {@link RestTemplate}.
+     *
+     * @param restTemplate the {@link RestTemplate} to use for HTTP requests.
+     */
     public ForkifyClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Searches for recipes by a given query string.
+     *
+     * @param query the search query string.
+     * @return a {@link ResponseEntity} containing the JSON response from the Forkify API.
+     */
     public ResponseEntity<String> searchRecipes(String query) {
+
+        // Constructs the URL for the search endpoint with the query parameter.
         String url = String.format("%s/search?q=%s", apiUrl, query);
         try {
             // Faz a chamada para a API externa e obtém a resposta
